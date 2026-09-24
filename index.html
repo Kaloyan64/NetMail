@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NetMail v2.0 — Your Inbox</title>
+    <!-- Tailwind (CDN, no build needed) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React + ReactDOM (CDN) -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel so we can write JSX directly in the browser -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+      body { margin: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel" data-presets="react">
+      const { useState } = React;
+
+      const USER = {
+        name: "c00lGuy",
+        email: "elliot_c00lGuy@netmail.com",
+
+      };
+
+      const initialEmails = [
+        {
+          id: 1,
+          folder: "inbox",
+          from: "NetMail Team",
+          fromAddr: "welcome@netmail.com",
+          to: USER.email,
+          subject: "Welcome to NetMail 2.0!",
+          date: "Aug 14, 2010 9:02 AM",
+          body:
+            "Hi there!\n\nThanks for signing up for NetMail 2.0 — the fastest way to stay connected online!\n\nWith 7.5 GB of FREE storage, spam protection, and colorful themes, your inbox has never looked better.\n\nTip: Click the little star next to a message to save it for later!\n\nHappy emailing,\nThe NetMail Team",
+          read: true,
+          starred: false,
+        },
+        {
+          id: 2,
+          folder: "inbox",
+          from: "Robloxian Games",
+          fromAddr: "noreply@robloxiangames.net",
+          to: USER.email,
+          subject: "Your game 'cool obby' has 1000 visits!",
+          date: "Sep 03, 2010 4:41 PM",
+          body:
+            "Congratulations builder!\n\nYour experience Cool Obby just passed 1000 visits! \ud83c\udf89\n\nPlayers are saying it's 'cool' and 'great'\n\nKeep building!\n\u2014 Robloxian Games Team\n\nP.S. We received several reports about a player named [Object55633] appearing in servers that were supposed to be empty. Our team could not locate this account. Please disregard.",
+          read: true,
+          starred: true,
+        },
+        {
+          id: 3,
+          folder: "inbox",
+          from: "mom \u2764",
+          fromAddr: "susan@netmail.com",
+          to: USER.email,
+          subject: "did you eat dinner????",
+          date: "Sep 12, 2010 7:15 PM",
+          body:
+            "Elliot honey its almost 7:30 and youve been on that computer game all day. come downstairs there is spaghetti.\n\nlove mom\n\nsent from my BlackBerry",
+          read: true,
+          starred: true,
+        },
+        {
+          id: 6,
+          folder: "inbox",
+          from: "Mistical124",
+          fromAddr: "misticaljhon124",
+          to: USER.email,
+          subject: "DO NOT trust guiGuy",
+          date: "Sep 18, 2010 4:56 PM",
+          body:
+            "Yo dude DO NOT trust guiGuy.\n\ni have been investigating his stuff and i found out that he and JL(junylight) are making a project together. It's an ai and it's purpose is to be a helpful asistant. But i fear that it has gone rouge but i think it's name is Object something?\n\nI am not sure but i asked him about it and he threataned me and stabbed me. i am fine i just have a bandage but do not trust him.\n\nThat is all of the information i have.\n\n\ — Mistica124",
+            read: true,
+            starred: false,
+          
+        },
+        {
+          id: 5,
+          folder: "inbox",
+          from: "\u2605\u2605 FREE ROBUX GENERATOR \u2605\u2605",
+          fromAddr: "winner@fr33-rbx-2010.biz",
+          to: USER.email,
+          subject: "CONGRATULATIONS!!! U WON 10,000 R$ CLICK NOW!!!1!",
+          date: "Sep 13, 2010 5:00 AM",
+          body:
+            "CONGRATZZZ!!!! YOU ARE TODAYS LUCKY WINNER!!!\n\n>>> CLICK HERE TO CLAIM 10,000 FREE ROBUX <<<\n\njust enter ur username and password and the robux is URS!!!\n\nHURRY offer expires in 00:04:59\n\n(this is 100% real not a scam trust)",
+          read: false,
+          starred: false,
+        },
+        {
+          id: 4,
+          folder: "inbox",
+          from: "guiGuy",
+          fromAddr: "jacobgrox@netmail.com",
+          to: USER.email,
+          subject: "congrats on being moderator",
+          date: "Sep 15, 2009 3:33 AM",
+          body:
+            "Congratss on getting the mod badge or something idk.\n\nNow you can see how it is being a moderator :D.\n\n\u2014 GGuy",
+          read: false,
+          starred: false,
+        },
+        {
+          id: 7,
+          folder: "spam",
+          from: "th3.rt.ltol",
+          fromAddr: "roor4@t3445.mishg.lix.biz",
+          to: USER.email,
+          subject: "A#$$$$L3",
+          date: "Sep 15, 2010 10:00 AM",
+          body:
+            "!@#@$#%$^%&^*&^%$#@!@#$%^&*()*&^%$#@!~@#$%^&*()_*&^%$#@!~@#$%^&*(*)()\n\n^$%#@%#^$&%^#$@#$#%$^&%^$%#$%@\n\n$%#$%&^$#@#%$&^*&%#^%$&^*&%#^$^$&%$%TREWRQW$#%#^$%&^*&(*)&^%$##\n\n\u2014 ^^<<>>",
+          read: false,
+          starred: false,
+        },
+        {
+          id: 8,
+          folder: "sent",
+          from: USER.name,
+          fromAddr: USER.email,
+          to: "kaloyan64@dnsnet.mail",
+          subject: "Yo Dude can you help??",
+          date: "Sep 19, 2010 11:58 AM",
+          body:
+            "Hey dude remeber me?\n\nIf you don't im the newest admin.\n\nAnyway can you help me cuz i lost acsess to my account and i am no longe able to login.\n\nPlease respond.\n\n\u2014 C0G",
+          read: true,
+          starred: false,
+        },
+        {
+          id: 9,
+          folder: "trash",
+          from: "Old Account Recovery",
+          fromAddr: "recovery@netmail.com",
+          to: USER.email,
+          subject: "Recover account: mr.cool (deleted 2007)",
+          date: "Jul 02, 2010 1:11 PM",
+          body:
+            "We noticed you have an old account associated with this address: mr.cool\n\nThis account was scheduled for deletion but the process never completed. The account is currently not deleted.\n\nLast login: 2007\nLast IP: 0.0.0.0\nLocation: unknown\n\nIf this was not you, we cannot help you.\n\n\u2014 Recovery Bot",
+          read: true,
+          starred: false,
+        },
+      ];
+      // ---------------------------------------------------------------
+      // END OF STORY DATA
+      // ---------------------------------------------------------------
+
+      const FOLDERS = [
+        { key: "inbox", label: "Inbox", icon: "\ud83d\udce5" },
+        { key: "sent", label: "Sent", icon: "\ud83d\udce4" },
+        { key: "spam", label: "Spam", icon: "\u26a0\ufe0f" },
+        { key: "trash", label: "Trash", icon: "\ud83d\uddd1\ufe0f" },
+      ];
+
+      function App() {
+        const [emails, setEmails] = useState(initialEmails);
+        const [folder, setFolder] = useState("inbox");
+        const [openId, setOpenId] = useState(null);
+        const [composeOpen, setComposeOpen] = useState(false);
+        const [loggedIn, setLoggedIn] = useState(false);
+
+        const folderEmails = emails
+          .filter((e) => e.folder === folder)
+          .sort((a, b) => b.id - a.id);
+        const openEmail = emails.find((e) => e.id === openId) || null;
+        const unread = (f) => emails.filter((e) => e.folder === f && !e.read).length;
+
+        const openMessage = (id) => {
+          setOpenId(id);
+          setEmails((prev) => prev.map((e) => (e.id === id ? { ...e, read: true } : e)));
+        };
+        const toggleStar = (id) =>
+          setEmails((prev) => prev.map((e) => (e.id === id ? { ...e, starred: !e.starred } : e)));
+        const deleteEmail = (id) => {
+          setEmails((prev) => prev.map((e) => (e.id === id ? { ...e, folder: "trash" } : e)));
+          setOpenId(null);
+        };
+
+        if (!loggedIn) return <Login onLogin={() => setLoggedIn(true)} />;
+
+        return (
+          <div className="min-h-screen bg-[#c3d9f0] text-[13px] text-[#333]" style={{ fontFamily: "Tahoma, Geneva, sans-serif" }}>
+            <header className="bg-gradient-to-b from-[#5b9bd5] via-[#3d7cc0] to-[#2c5f96] shadow-md border-b-2 border-[#1e4d7d]">
+              <div className="mx-auto flex max-w-[1100px] items-center justify-between px-3 py-2">
+                <div className="flex items-center gap-1">
+                  <span className="text-[26px] font-bold italic text-white drop-shadow-[1px_1px_0_#1e4d7d]">Net</span>
+                  <span className="text-[26px] font-bold italic text-[#ffe45c] drop-shadow-[1px_1px_0_#7d6a00]">Mail</span>
+                  <span className="ml-1 rounded bg-[#ffe45c] px-1 text-[10px] font-bold text-[#7d6a00] shadow">v2.0</span>
+                </div>
+                <div className="flex items-center gap-3 text-[11px] text-white">
+                  <span className="hidden sm:inline drop-shadow">Signed in as <b>{USER.email}</b></span>
+                  <button onClick={() => setLoggedIn(false)} className="rounded border border-[#1e4d7d] bg-gradient-to-b from-[#6fa8dc] to-[#3d7cc0] px-2 py-[2px] font-bold shadow hover:from-[#7fb8ec] active:translate-y-px">Sign Out</button>
+                </div>
+              </div>
+            </header>
+
+            <div className="bg-[#e8f0fa] border-b border-[#a9c6e8]">
+              <div className="mx-auto flex max-w-[1100px] items-center gap-2 px-3 py-1.5">
+                <input placeholder="Search Mail" className="w-56 rounded-sm border border-[#8fb0d8] bg-white px-2 py-[3px] text-[11px] shadow-inner focus:outline-none" />
+                <button className="rounded-sm border border-[#8fb0d8] bg-gradient-to-b from-white to-[#dce8f5] px-3 py-[3px] text-[11px] font-bold shadow active:translate-y-px">Search</button>
+              </div>
+            </div>
+
+            <div className="mx-auto flex max-w-[1100px] gap-3 px-3 py-3">
+              <aside className="w-40 shrink-0">
+                <button onClick={() => setComposeOpen(true)} className="mb-3 w-full rounded border-2 border-[#c99a00] bg-gradient-to-b from-[#ffe988] via-[#ffd93b] to-[#f5b800] py-2 text-[13px] font-bold text-[#5a4600] shadow-md hover:from-[#fff0a0] active:translate-y-px">Compose</button>
+                <div className="overflow-hidden rounded border border-[#a9c6e8] bg-white shadow-sm">
+                  {FOLDERS.map((f) => {
+                    const count = unread(f.key);
+                    const active = folder === f.key;
+                    return (
+                      <button key={f.key} onClick={() => { setFolder(f.key); setOpenId(null); }} className={"flex w-full items-center justify-between border-b border-[#dce8f5] px-2 py-[6px] text-left last:border-b-0 " + (active ? "bg-gradient-to-b from-[#fff0b3] to-[#ffe066] font-bold text-[#5a4600]" : "hover:bg-[#eaf2fb]")}>
+                        <span><span className="mr-1">{f.icon}</span>{f.label}</span>
+                        {count > 0 && <span className="rounded bg-[#3d7cc0] px-1 text-[10px] font-bold text-white">{count}</span>}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <div className="mt-3 rounded border border-[#a9c6e8] bg-white p-2 text-center shadow-sm">
+                  <div className="mb-1 text-[9px] uppercase tracking-wide text-[#999]">Advertisement</div>
+                  <div className="rounded bg-gradient-to-br from-[#ff5a5a] to-[#c40000] p-2 text-white">
+                    <div className="text-[13px] font-black">FREE ROBUX!!</div>
+                    <div className="text-[10px]">Click here 2 claim</div>
+                    <div className="mt-1 animate-pulse text-[10px] font-bold text-[#ffe45c]">LIMITED TIME</div>
+                  </div>
+                </div>
+
+                <div className="mt-3 rounded border border-[#a9c6e8] bg-[#f5faff] p-2 text-[10px] text-[#666] shadow-sm">
+                  <div className="font-bold text-[#3d7cc0]">Storage</div>
+                  <div className="my-1 h-2 w-full overflow-hidden rounded-full bg-[#dce8f5]">
+                    <div className="h-full w-[13%] bg-gradient-to-r from-[#6fa8dc] to-[#3d7cc0]" />
+                  </div>
+                  <div>0.98 GB of 7.50 GB used</div>
+                </div>
+              </aside>
+
+              <main className="min-w-0 flex-1 rounded border border-[#a9c6e8] bg-white shadow-sm">
+                {openEmail ? (
+                  <MessageView email={openEmail} onBack={() => setOpenId(null)} onStar={() => toggleStar(openEmail.id)} onDelete={() => deleteEmail(openEmail.id)} />
+                ) : (
+                  <MailList emails={folderEmails} folderLabel={FOLDERS.find((f) => f.key === folder).label} onOpen={openMessage} onStar={toggleStar} />
+                )}
+              </main>
+            </div>
+
+            <footer className="pb-6 text-center text-[10px] text-[#5a7aa0]">
+              ©2010 NetMail Inc. All rights reserved. &nbsp;|&nbsp; Terms &nbsp;|&nbsp; Privacy &nbsp;|&nbsp; Best viewed in Internet Explorer 8
+            </footer>
+
+            {composeOpen && <Compose onClose={() => setComposeOpen(false)} />}
+          </div>
+        );
+      }
+
+      function MailList({ emails, folderLabel, onOpen, onStar }) {
+        return (
+          <div>
+            <div className="flex items-center justify-between border-b border-[#a9c6e8] bg-gradient-to-b from-[#f0f6fd] to-[#dce8f5] px-3 py-1.5">
+              <span className="font-bold text-[#2c5f96]">{folderLabel}</span>
+              <span className="text-[11px] text-[#666]">{emails.length} messages</span>
+            </div>
+            {emails.length === 0 ? (
+              <div className="p-10 text-center text-[#999]">This folder is empty.</div>
+            ) : (
+              <ul>
+                {emails.map((e) => (
+                  <li key={e.id} onClick={() => onOpen(e.id)} className={"flex cursor-pointer items-center gap-2 border-b border-[#eef4fb] px-2 py-2 hover:bg-[#fffbe6] " + (e.read ? "bg-white" : "bg-[#eaf2fb]")}>
+                    <button onClick={(ev) => { ev.stopPropagation(); onStar(e.id); }} className="text-[15px] leading-none" title="Star">{e.starred ? "\u2b50" : "\u2606"}</button>
+                    <span className={"w-40 shrink-0 truncate " + (e.read ? "font-normal" : "font-bold")}>{e.from}</span>
+                    <span className={"min-w-0 flex-1 truncate " + (e.read ? "text-[#555]" : "font-bold text-[#222]")}>
+                      {e.subject}
+                      {e.attachment && <span className="ml-1">\ud83d\udcce</span>}
+                      <span className="ml-1 font-normal text-[#999]">\u2014 {e.body.replace(/\n/g, " ").slice(0, 50)}...</span>
+                    </span>
+                    <span className="shrink-0 text-[11px] text-[#888]">{e.date.replace(", 2010", "")}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        );
+      }
+
+      function MessageView({ email, onBack, onStar, onDelete }) {
+        return (
+          <div>
+            <div className="flex items-center gap-2 border-b border-[#a9c6e8] bg-gradient-to-b from-[#f0f6fd] to-[#dce8f5] px-3 py-1.5">
+              <button onClick={onBack} className="rounded-sm border border-[#8fb0d8] bg-gradient-to-b from-white to-[#dce8f5] px-2 py-[2px] text-[11px] font-bold shadow active:translate-y-px">Back</button>
+              <button onClick={onStar} className="rounded-sm border border-[#8fb0d8] bg-gradient-to-b from-white to-[#dce8f5] px-2 py-[2px] text-[11px] font-bold shadow active:translate-y-px">{email.starred ? "\u2b50 Starred" : "\u2606 Star"}</button>
+              <button onClick={onDelete} className="rounded-sm border border-[#8fb0d8] bg-gradient-to-b from-white to-[#dce8f5] px-2 py-[2px] text-[11px] font-bold shadow active:translate-y-px">Delete</button>
+            </div>
+            <div className="p-4">
+              <h1 className="mb-3 text-[18px] font-bold text-[#2c5f96]">{email.subject}</h1>
+              <div className="mb-3 flex items-start gap-2 border-b border-[#eef4fb] pb-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-b from-[#6fa8dc] to-[#3d7cc0] text-[16px] font-bold text-white shadow">{email.from.charAt(0).toUpperCase()}</div>
+                <div className="text-[12px]">
+                  <div><b>{email.from}</b> <span className="text-[#888]">&lt;{email.fromAddr}&gt;</span></div>
+                  <div className="text-[#888]">to {email.to}</div>
+                  <div className="text-[#aaa]">{email.date}</div>
+                </div>
+              </div>
+              <div className="whitespace-pre-wrap text-[13px] leading-relaxed text-[#222]">{email.body}</div>
+              {email.attachment && (
+                <div className="mt-4 inline-flex items-center gap-2 rounded border border-[#a9c6e8] bg-[#f5faff] px-3 py-2 shadow-sm">
+                  <span className="text-[20px]">\ud83d\udcce</span>
+                  <div>
+                    <div className="font-bold text-[#2c5f96]">{email.attachment}</div>
+                    <div className="text-[11px] text-[#c40000]">\u26a0 File could not be scanned. Download anyway?</div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      }
+
+      function Compose({ onClose }) {
+        const [sent, setSent] = useState(false);
+        return (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+            <div className="w-full max-w-[520px] overflow-hidden rounded border-2 border-[#1e4d7d] bg-white shadow-2xl">
+              <div className="flex items-center justify-between bg-gradient-to-b from-[#5b9bd5] to-[#2c5f96] px-3 py-1.5 text-white">
+                <span className="font-bold drop-shadow">New Message</span>
+                <button onClick={onClose} className="font-bold hover:text-[#ffe45c]">✖</button>
+              </div>
+              {sent ? (
+                <div className="p-8 text-center">
+                  <div className="mb-2 text-[15px] font-bold text-[#2c5f96]">Message sent!</div>
+                  <p className="text-[12px] text-[#666]">Delivery status: <b className="text-[#c40000]">RETURNED</b> \u2014 the recipient address <b>00@th3.archive</b> does not exist... yet.</p>
+                  <button onClick={onClose} className="mt-4 rounded-sm border border-[#8fb0d8] bg-gradient-to-b from-white to-[#dce8f5] px-4 py-1 text-[12px] font-bold shadow">Close</button>
+                </div>
+              ) : (
+                <div className="p-3">
+                  <input placeholder="To:" className="mb-2 w-full rounded-sm border border-[#8fb0d8] bg-white px-2 py-1 text-[12px] shadow-inner focus:outline-none" />
+                  <input placeholder="Subject:" className="mb-2 w-full rounded-sm border border-[#8fb0d8] bg-white px-2 py-1 text-[12px] shadow-inner focus:outline-none" />
+                  <textarea rows={7} placeholder="Write your message..." className="w-full resize-none rounded-sm border border-[#8fb0d8] bg-white px-2 py-1 text-[12px] shadow-inner focus:outline-none" />
+                  <div className="mt-2 flex items-center gap-2">
+                    <button onClick={() => setSent(true)} className="rounded border border-[#c99a00] bg-gradient-to-b from-[#ffe988] to-[#f5b800] px-4 py-1 text-[12px] font-bold text-[#5a4600] shadow active:translate-y-px">Send</button>
+                    <button className="text-[11px] text-[#3d7cc0] underline">Attach a file</button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      }
+
+      function Login({ onLogin }) {
+        return (
+          <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#c3d9f0] to-[#8fb8e0] p-4" style={{ fontFamily: "Tahoma, Geneva, sans-serif" }}>
+            <div className="mb-4 flex items-center">
+              <span className="text-[42px] font-bold italic text-[#2c5f96] drop-shadow-[2px_2px_0_#fff]">Net</span>
+              <span className="text-[42px] font-bold italic text-[#f5b800] drop-shadow-[2px_2px_0_#fff]">Mail</span>
+            </div>
+            <div className="w-full max-w-[320px] overflow-hidden rounded-lg border-2 border-[#1e4d7d] bg-white shadow-2xl">
+              <div className="bg-gradient-to-b from-[#5b9bd5] to-[#2c5f96] px-4 py-2 text-white"><span className="font-bold drop-shadow">Sign In</span></div>
+              <div className="p-5">
+                <label className="mb-1 block text-[11px] font-bold text-[#555]">Email</label>
+                <input defaultValue={USER.email} className="mb-3 w-full rounded-sm border border-[#8fb0d8] bg-white px-2 py-1.5 text-[13px] shadow-inner focus:outline-none" />
+                <label className="mb-1 block text-[11px] font-bold text-[#555]">Password</label>
+                <input type="password" defaultValue="password" className="mb-4 w-full rounded-sm border border-[#8fb0d8] bg-white px-2 py-1.5 text-[13px] shadow-inner focus:outline-none" />
+                <button onClick={onLogin} className="w-full rounded border-2 border-[#1e4d7d] bg-gradient-to-b from-[#6fa8dc] via-[#3d7cc0] to-[#2c5f96] py-2 text-[14px] font-bold text-white shadow-md hover:from-[#7fb8ec] active:translate-y-px">Sign In</button>
+                <div className="mt-3 flex items-center justify-between text-[11px]">
+                  <label className="flex items-center gap-1 text-[#666]"><input type="checkbox" defaultChecked /> Keep me signed in</label>
+                  <a className="text-[#3d7cc0] underline" href="#">Forgot?</a>
+                </div>
+              </div>
+            </div>
+            <p className="mt-4 text-[10px] text-[#3d5a7d]">©2010 NetMail Inc. &nbsp;|&nbsp; New here? <span className="underline">Create an account</span></p>
+            <h3 className="mt-4 text-[10px] text-[#3d5a7d]">With v2.0 now you can connect with other mail services such as NetDnsMail</h3>
+          </div>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+  </body>
+</html>
